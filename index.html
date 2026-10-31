@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#7651a8">
+<title>REINA</title>
+<style>
+:root{--p:#7651a8;--p2:#a98bd0;--pale:#f2ecfa;--ink:#30263b;--muted:#81768d;--line:#e8e0f0;--white:#fff;--bg:#faf8fc;--good:#4b9476;--bad:#b46b75}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.hidden{display:none!important}
+header{background:linear-gradient(135deg,#684391,#9b7bc2);color:#fff;padding:22px 18px 28px;border-radius:0 0 26px 26px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:980px;margin:auto}.brand{display:flex;align-items:center;gap:10px}.flower{font-size:30px}.brand b{font-family:Georgia,serif;letter-spacing:3px;font-size:25px}.sub{font-size:12px;opacity:.85;margin-top:3px}.avatar{width:42px;height:42px;border-radius:50%;background:#fff;color:var(--p);display:grid;place-items:center;font-size:23px}
+main{max-width:980px;margin:-12px auto 88px;padding:0 14px}.panel{background:white;border:1px solid var(--line);border-radius:19px;padding:16px;margin:14px 0;box-shadow:0 5px 18px #44305c0a}
+h2{font-size:18px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px}.muted{color:var(--muted);font-size:12px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat{background:var(--pale);border-radius:15px;padding:13px}.stat strong{font-size:22px;display:block;margin-top:5px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{background:var(--p);color:#fff;border-radius:12px;padding:10px 14px;font-size:13px}.btn.light{background:var(--pale);color:var(--p)}.btn.ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}.btn.danger{background:#f8e9eb;color:#9b4d5a}
+input,select,textarea{width:100%;border:1px solid var(--line);background:#fff;border-radius:11px;padding:11px;color:var(--ink);outline:none;margin:5px 0 10px}input:focus,select:focus,textarea:focus{border-color:var(--p2)}label{font-size:12px;color:var(--muted)}.field{margin:7px 0}.row{display:flex;gap:9px;align-items:center}.row>*{flex:1}.task{display:flex;align-items:center;gap:9px;border-bottom:1px solid #f0ebf5;padding:10px 0}.task:last-child{border:0}.task input{width:18px;height:18px;margin:0;accent-color:var(--p)}.task span{flex:1;font-size:13px}.pill{font-size:11px;background:var(--pale);color:var(--p);padding:5px 8px;border-radius:20px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:center;gap:3px;padding:8px 4px calc(8px + env(safe-area-inset-bottom));z-index:10}nav button{background:transparent;color:var(--muted);font-size:9px;min-width:0;flex:1;max-width:150px;padding:5px 1px;border-radius:12px}nav button i{display:block;font-style:normal;font-size:20px;margin-bottom:3px}nav button.active{background:var(--pale);color:var(--p);font-weight:bold}
+.page{display:none}.page.active{display:block}.progress{height:9px;border-radius:20px;background:#eee8f5;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,#9270bd,#c4a9e5);width:0}
+.chip{display:inline-block;background:#f5f1f9;padding:6px 9px;border-radius:9px;font-size:12px;margin:3px}.small{font-size:11px}.empty{text-align:center;color:var(--muted);padding:18px}
+#auth{max-width:420px;margin:7vh auto;padding:16px}.logo{text-align:center;color:var(--p);font-family:Georgia,serif;font-size:32px;letter-spacing:4px;margin:8px}.flowerbig{text-align:center;font-size:55px;color:var(--p)}.note{background:#fff8e9;border:1px solid #f1e3c5;color:#80632b;padding:10px;border-radius:12px;font-size:11px;line-height:1.7}
+@media(min-width:700px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}}
+
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:#382b46;color:#fff;padding:12px 17px;border-radius:13px;z-index:40;box-shadow:0 8px 25px #20152b30;font-size:13px;max-width:90%;text-align:center}
+.modal{position:fixed;inset:0;background:#241a30a8;display:grid;place-items:center;padding:18px;z-index:30}
+.modalcard{background:#fff;border-radius:22px;padding:22px;max-width:390px;width:100%;box-shadow:0 15px 45px #160d2333}
+.stepdots{display:flex;gap:6px;justify-content:center;margin:14px}.stepdots span{width:7px;height:7px;border-radius:50%;background:#e5ddec}.stepdots span.on{background:var(--p);width:19px;border-radius:9px}
+.helpbtn{float:left;border:1px solid var(--line);background:#fff;color:var(--p);border-radius:50%;width:28px;height:28px}
+</style>
+</head>
+<body>
+<section id="auth">
+ <div class="panel">
+  <div class="flowerbig">✿</div><div class="logo">REINA</div>
+  <p class="muted" style="text-align:center">خطوة صغيرة كل يوم تصنع فرقاً</p>
+  <div id="loginBox">
+   <h2>تسجيل الدخول</h2>
+   <label>اسم المستخدم</label><input id="loginName" autocomplete="username" placeholder="اسم المستخدم">
+   <label>كلمة المرور</label><input id="loginPass" type="password" autocomplete="current-password" placeholder="كلمة المرور">
+   <button class="btn" style="width:100%" onclick="login()">دخول</button>
+   <p class="muted" style="text-align:center">ما عندج حساب؟ <a href="#" onclick="showSignup()">إنشاء حساب</a></p>
+  </div>
+  <div id="signupBox" class="hidden">
+   <h2>حساب جديد</h2>
+   <label>اسم مستخدم غير مكرر على هذا الجهاز</label><input id="newName" placeholder="اسم المستخدم">
+   <label>كلمة المرور</label><input id="newPass" type="password" placeholder="اختاري كلمة مرور">
+   <label>اختاري افتار</label><select id="newAvatar"><option>🌸</option><option>🦋</option><option>🌷</option><option>🐱</option><option>⭐</option><option>🌙</option><option>🐰</option></select>
+   <button class="btn" style="width:100%" onclick="signup()">إنشاء الحساب</button>
+   <p class="muted" style="text-align:center"><a href="#" onclick="showLogin()">رجوع للدخول</a></p>
+  </div>
+  <div class="note">نسخة REINA الأولية تحفظ الحسابات والبيانات على هذا الجهاز والمتصفح فقط. لا تستخدمي كلمة مرور مهمة أو مشتركة مع حساباتك الأخرى. حذف بيانات المتصفح قد يمسح الحساب.</div>
+ </div>
+</section>
+<div id="app" class="hidden">
+<header><div class="top"><div class="brand"><div class="flower">✿</div><div><b>REINA</b><div class="sub">مساحتكِ لتنظيم يومكِ</div></div></div><div class="row" style="flex:0;align-items:center"><div id="headAvatar" class="avatar">🌸</div><button class="btn light" onclick="logout()">خروج</button></div></div></header>
+<main>
+<section id="home" class="page active">
+ <div class="panel"><div class="row"><div><div class="muted">أهلاً بكِ</div><h2 id="hello">صباح الخير</h2><div class="muted" id="todayText"></div></div><div class="avatar" id="homeAvatar">🌸</div></div></div>
+ <div class="grid">
+  <div class="stat"><span class="muted">⭐ نقاطك</span><strong id="points">0</strong><span class="muted" id="level">المستوى 1</span></div>
+  <div class="stat"><span class="muted">✅ مهام اليوم</span><strong id="doneCount">0/0</strong><span class="muted">إنجاز اليوم</span></div>
+  <div class="stat"><span class="muted">🏅 إنجازات</span><strong id="badges">0</strong><span class="muted">شارة مكتسبة</span></div>
+  <div class="stat"><span class="muted">📈 الالتزام</span><strong id="rate">0%</strong><span class="muted">من مهام اليوم</span></div>
+ </div>
+ <div class="panel"><h2>مهام اليوم</h2><div id="homeTasks"></div><button class="btn light" onclick="go('schedule')">عرض الجدول الكامل</button></div>
+ <div class="panel"><h2>💧 شرب الماء</h2><div class="row"><div><strong id="waterText">0 / 6 أكواب</strong><div class="progress"><span id="waterBar"></span></div></div><button class="btn" onclick="addWater()">+ كوب</button></div><p class="muted">عدّلي الهدف بما يناسب احتياجكِ والطقس ونشاطكِ.</p></div>
+ <div class="panel"><h2>🤖 مساعد REINA</h2><p id="assistantText" class="muted">ابدئي بإضافة مهامكِ، وسأتابع إنجازكِ.</p></div>
+</section>
+<section id="schedule" class="page">
+ <div class="panel"><h2>📅 جدولكِ <button class="helpbtn" onclick="showHelp('schedule')">؟</button></h2><div class="row"><button class="btn light" onclick="setScheduleView('day')">يومي</button><button class="btn light" onclick="setScheduleView('week')">أسبوعي</button><button class="btn light" onclick="setScheduleView('month')">شهري</button></div><div id="calendarLabel" class="muted" style="margin:12px 0"></div><div id="taskList"></div>
+ <h3 style="margin-top:16px">إضافة مهمة</h3><div class="field"><label>اسم المهمة</label><input id="taskTitle" placeholder="مثلاً: مراجعة مادة العلوم"></div><div class="row"><div><label>القسم</label><select id="taskCat"><option>الصحة</option><option>الدراسة</option><option>الدين</option><option>العناية</option><option>الترفيه</option><option>أخرى</option></select></div><div><label>الوقت</label><input id="taskTime" type="time"></div></div><div class="row"><div><label>الأهمية</label><select id="taskDiff"><option value="1">عادية</option><option value="2">مهمة</option><option value="3">عالية</option></select></div><div><label>موعد المهمة</label><input id="taskDate" type="date"></div></div><label class="task" style="border:0"><input id="repeatDaily" type="checkbox"><span>تكرار هذه المهمة يومياً</span></label>
+<button type="button" class="btn" onclick="addTask()">إضافة للجدول</button></div>
+<div class="panel"><h3>🗓️ جدولي الأساسي</h3>
+<p class="muted">اكتبي أوقاتكِ الثابتة مثل المدرسة أو الدروس أو الالتزامات، ثم احفظيها.</p>
+<textarea id="baseSchedule" rows="4" placeholder="مثلاً: المدرسة من 8 صباحاً إلى 1 ظهراً..."></textarea>
+<button class="btn light" onclick="saveBaseSchedule()">حفظ الجدول الأساسي</button>
+<h3 style="margin-top:15px">مهامي اليومية المتكررة</h3>
+<div class="row"><input id="dailyTaskName" placeholder="مثلاً: ترتيب السرير"><button class="btn" onclick="addDailyTask()">إضافة يومية</button></div>
+<div id="dailyTaskList"></div></div>
+</section>
+<section id="mytasks" class="page">
+ <div class="panel"><h2>✓ مهامي</h2><p class="muted">كل مهامكِ في مكان واحد، مهما كان موعدها. تُضاف النقاط عند الإكمال مرة واحدة فقط.</p>
+ <div class="row"><div><label>عرض المهام</label><select id="myTaskFilter" onchange="renderMyTasks()"><option value="all">كل المهام</option><option value="pending">غير المكتملة</option><option value="done">المكتملة</option></select></div><div><label>ترتيب</label><select id="myTaskSort" onchange="renderMyTasks()"><option value="date">حسب الموعد</option><option value="new">الأحدث إضافة</option></select></div></div>
+ <div id="myTaskList"></div><button class="btn light" onclick="go('schedule')">+ إضافة مهمة جديدة</button></div>
+</section>
+<section id="health" class="page">
+ <div class="panel"><h2>🏃‍♀️ الحركة والرياضة <button class="helpbtn" onclick="showHelp('health')">؟</button></h2><p class="muted">اختاري نشاطاً يناسب طاقتكِ وقدرتكِ، والراحة جزء من الصحة.</p><div id="exerciseChoices"></div><div class="row"><input id="exerciseName" placeholder="نشاط من اختياركِ"><button class="btn" onclick="addQuick('exerciseName','رياضة')">إضافة</button></div></div>
+ <div class="panel"><h2>🥗 التغذية وتفضيلات الطعام</h2><label>أطعمة لا أحبها</label><input id="dislike" placeholder="افصلي بينها بفاصلة"><label>أطعمة لا أتناولها</label><input id="avoid" placeholder="افصلي بينها بفاصلة"><label>حساسية غذائية (اكتبي المكونات بدقة)</label><input id="allergy" placeholder="مثلاً: الفول السوداني"><label>أطعمة مفضلة</label><input id="favoriteFood" placeholder="أكلات أحبها"><button class="btn" onclick="saveFood()">حفظ التفضيلات</button><p class="muted">لا تعتمدِي على الاقتراح وحده عند وجود حساسية؛ تحققي دائماً من مكونات الطعام والملصق الغذائي.</p></div>
+ <div class="panel"><h2>💧 الماء</h2><label>هدف الأكواب اليومي</label><input id="waterGoal" type="number" min="1" max="20" value="6"><button class="btn" onclick="saveWaterGoal()">حفظ الهدف</button><div class="actions"><button class="btn light" onclick="addWater()">+ كوب</button><button class="btn ghost" onclick="resetWater()">إعادة عدّ اليوم</button></div></div>
+ <div class="panel"><h2>😴 النوم</h2><div class="row"><div><label>وقت النوم المعتاد</label><input id="sleepTime" type="time"></div><div><label>وقت الاستيقاظ</label><input id="wakeTime" type="time"></div></div><button class="btn" onclick="saveSleep()">حفظ المواعيد</button><label>ساعات النوم الفعلية</label><input id="sleepHours" type="number" min="0" max="24" step=".5" placeholder="عدد الساعات"><button class="btn light" onclick="logSleep()">تسجيل نوم الليلة</button><p class="muted" id="sleepSummary"></p></div>
+ <div class="panel"><h2>⚖️ متابعة صحية اختيارية</h2><p class="muted">يمكن تسجيل القياسات لملاحظتها فقط؛ لا توجد نقاط أو عقوبات مرتبطة بالوزن.</p><label>الطول (اختياري)</label><div class="row"><input id="height" type="number" min="50" max="230" step=".1" placeholder="سم"><button class="btn light" onclick="saveHeight()">حفظ الطول</button></div><p id="heightHistory" class="muted"></p>
+<label>الوزن (اختياري)</label><input id="weight" type="number" min="1" max="500" step=".1" placeholder="كغم"><button class="btn light" onclick="saveWeight()">تسجيل القياس</button><p id="weightHistory" class="muted"></p></div>
+ <div class="panel"><h2>🧴 العناية الشخصية</h2><div id="careItems"></div><button class="btn light" onclick="addPreset('العناية','روتين العناية الشخصية')">إضافة مهمة عناية للجدول</button></div>
+</section>
+<section id="religion" class="page">
+ <div class="panel"><h2>🕌 عباداتي <button class="helpbtn" onclick="showHelp('religion')">؟</button></h2><p class="muted">متابعة شخصية اختيارية، بلا مقارنة أو عقوبات.</p><div id="prayers"></div><button class="btn light" onclick="addPreset('الدين','ورد القرآن')">إضافة ورد القرآن للجدول</button><button class="btn light" onclick="addPreset('الدين','أذكار الصباح والمساء')">إضافة الأذكار للجدول</button><div class="field"><label>هدف ديني أسبوعي</label><input id="faithGoal" placeholder="مثلاً: قراءة ورد يومي"><button class="btn" onclick="saveFaith()">حفظ الهدف</button></div></div>
+ <div class="panel"><h2>📿 تذكيرات وأقسام</h2><div class="chip">أذكار الصباح</div><div class="chip">أذكار المساء</div><div class="chip">القرآن الكريم</div><div class="chip">الأدعية والاستغفار</div><div class="chip">حصن المسلم</div><div class="chip">السنن</div><p class="muted">يمكن إضافة أي منها إلى جدولكِ وتحديد موعده.</p></div>
+</section>
+<section id="achievements" class="page">
+ <div class="panel"><h2>🏆 إنجازاتي <button class="helpbtn" onclick="showHelp('achievements')">؟</button></h2><div id="achievementList"></div></div>
+ 
+ <div class="panel"><h2>📊 تقاريري</h2><div class="grid"><div class="stat"><span class="muted">مهام مكتملة</span><strong id="totalDone">0</strong></div><div class="stat"><span class="muted">مجموع النقاط</span><strong id="reportPoints">0</strong></div></div><h3 style="margin-top:14px">آخر 7 أيام</h3><div id="weeklyBars"></div><p class="muted">التقرير يقارن تقدمكِ بنفسكِ، وليس بالآخرين.</p></div>
+</section>
+<section id="shop" class="page"><div class="panel"><h2>🛍️ متجر REINA</h2>
+<p class="muted">استخدمي نقاطكِ لفتح الزخارف والافتارات. الثيمات تُفتح من المتجر فقط.</p>
+<div class="stat" style="margin-bottom:12px">رصيدكِ: <strong id="shopPoints">0</strong> نقطة</div><div id="store"></div></div></section>
+<section id="profile" class="page">
+ <div class="panel"><h2>👤 ملفي الشخصي <button class="helpbtn" onclick="showHelp('profile')">؟</button></h2><label>اسم العرض</label><input id="profileDisplay"><label>العمر (اختياري)</label><input id="age" type="number" min="10" max="100"><label>المرحلة الدراسية</label><input id="school" placeholder="مثلاً: الثالث المتوسط"><label>الهوايات</label><input id="hobbies" placeholder="الرسم، القراءة..."><label>أوقات الفراغ</label><input id="freeTime" placeholder="مثلاً: بعد الرابعة عصراً"><label>جدول الدراسة / الالتزامات</label><textarea id="routine" rows="3" placeholder="اكتبي الأوقات المهمة"></textarea><label>الافتار</label><select id="profileAvatar"><option>🌸</option><option>🦋</option><option>🌷</option><option>🐱</option><option>⭐</option><option>🌙</option><option>🐰</option></select><button class="btn" onclick="saveProfile()">حفظ الملف</button></div>
+ <div class="panel"><h2>🔔 التذكيرات</h2><p class="muted">تحتاج الإشعارات إذناً من المتصفح، وقد لا تعمل في الخلفية على كل الأجهزة.</p><button class="btn" onclick="enableNotifications()">تفعيل إشعارات المتصفح</button><label>تذكير شرب الماء كل (ساعات)</label><select id="waterReminder"><option value="0">إيقاف</option><option value="2">كل ساعتين</option><option value="3">كل 3 ساعات</option><option value="4">كل 4 ساعات</option></select><button class="btn light" onclick="saveReminder()">حفظ التذكير</button><p class="muted" id="notifyStatus"></p></div>
+ <div class="panel"><h2>⚙️ إعدادات الحساب</h2><p class="muted">اسم المستخدم: <b id="usernameLabel"></b></p><button class="btn ghost" onclick="logout()">تسجيل الخروج</button></div>
+</section>
+</main>
+<nav>
+ <button class="active" data-page="home" onclick="go('home')"><i>⌂</i>الرئيسية</button>
+ <button data-page="schedule" onclick="go('schedule')"><i>▦</i>الجدول</button>
+ <button data-page="mytasks" onclick="go('mytasks')"><i>✓</i>مهامي</button>
+ <button data-page="health" onclick="go('health')"><i>♡</i>الصحة</button>
+ <button data-page="religion" onclick="go('religion')"><i>☾</i>الدين</button>
+ <button data-page="achievements" onclick="go('achievements')"><i>✧</i>إنجازاتي</button>
+ <button data-page="shop" onclick="go('shop')"><i>🛍</i>المتجر</button>
+ <button data-page="profile" onclick="go('profile')"><i>♙</i>حسابي</button>
+</nav>
+</div>
+
+<div id="toast" class="toast hidden" role="status"></div>
+<div id="tour" class="modal hidden"><div class="modalcard">
+<div class="flowerbig" id="tourIcon">✿</div><div class="logo" style="font-size:25px">REINA</div>
+<div class="stepdots" id="tourDots"></div><h2 id="tourTitle" style="text-align:center"></h2>
+<p id="tourText" style="line-height:1.9;text-align:center;color:var(--muted);font-size:14px"></p>
+<div class="actions" style="justify-content:space-between;margin-top:18px">
+<button class="btn ghost" onclick="finishTour()">تخطي الجولة</button><button class="btn" id="tourNext" onclick="nextTour()">التالي</button>
+</div></div></div>
+<script>
+const DB='reina_users_v1',SESSION='reina_session_v1';
+let user=null,currentData=null,view='day';
+const $=id=>document.getElementById(id);
+const today=()=>{let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+const fresh=()=>({points:0,tasks:[],dailyTasks:[],waterPoints:{date:today(),awarded:0},water:{date:today(),count:0,goal:6},food:{},sleep:{},weights:[],profile:{},prayers:{},doneTotal:0,faithGoal:'',owned:[],mood:[],logs:{}});
+function users(){try{return JSON.parse(localStorage.getItem(DB)||'{}')}catch{return {}}}
+function saveUsers(u){localStorage.setItem(DB,JSON.stringify(u))}
+function showSignup(){$('loginBox').classList.add('hidden');$('signupBox').classList.remove('hidden')}
+function showLogin(){$('signupBox').classList.add('hidden');$('loginBox').classList.remove('hidden')}
+function signup(){let n=$('newName').value.trim(),p=$('newPass').value;if(n.length<3||p.length<4)return alert('اسم المستخدم 3 أحرف على الأقل وكلمة المرور 4 أحرف على الأقل.');let u=users();if(u[n])return alert('اسم المستخدم مستخدم على هذا الجهاز.');u[n]={password:p,data:fresh()};u[n].data.profile.avatar=$('newAvatar').value;saveUsers(u);enter(n)}
+function login(){let n=$('loginName').value.trim(),p=$('loginPass').value,u=users();if(!u[n]||u[n].password!==p)return alert('اسم المستخدم أو كلمة المرور غير صحيحة.');enter(n)}
+function enter(n){user=n;currentData=users()[n].data||fresh();localStorage.setItem(SESSION,n);$('auth').classList.add('hidden');$('app').classList.remove('hidden');render();if(!data().tourDone)setTimeout(()=>startTour(),350)}
+function logout(){user=null;currentData=null;localStorage.removeItem(SESSION);$('app').classList.add('hidden');$('auth').classList.remove('hidden');showLogin()}
+function data(){return currentData}
+function save(){if(!user||!currentData)return;let u=users();if(!u[user])return;u[user].data=currentData;saveUsers(u)}
+function go(id){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));render()}
+function pointsFor(t){return [0,5,10,15][Number(t.diff)||1]}
+function addTask(){
+ let title=$('taskTitle').value.trim();
+ if(!title){alert('اكتبي اسم المهمة أولاً.');$('taskTitle').focus();return}
+ let d=data(),date=$('taskDate').value||today(),id=Date.now();
+ let task={id,title,cat:$('taskCat').value,time:$('taskTime').value,date:date,diff:$('taskDiff').value,done:false,penalty:false};
+ d.tasks.push(task);
+ if($('repeatDaily').checked){
+   d.dailyTasks=d.dailyTasks||[];
+   d.dailyTasks.push({id:'daily-'+id,title:title,cat:task.cat,time:task.time,diff:task.diff,active:true});
+ }
+ save();$('taskTitle').value='';$('taskTime').value='';$('taskDate').value=today();$('repeatDaily').checked=false;
+ view='day';go('schedule');showToast('تمت إضافة المهمة إلى جدولكِ ✓');
+ setTimeout(()=>{let el=[...document.querySelectorAll('#taskList .task')].find(x=>x.textContent.includes(title));if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},150);
+}
+function addPreset(cat,title){data().tasks.push({id:Date.now(),title,cat,date:today(),time:'',diff:'1',done:false,penalty:false});save();go('schedule')}
+function addQuick(id,cat){let v=$(id).value.trim();if(!v)return;data().tasks.push({id:Date.now(),title:v,cat,date:today(),time:'',diff:'1',done:false,penalty:false});$(id).value='';save();render()}
+function taskToggle(id,checked){
+ let d=data(),t=d.tasks.find(x=>String(x.id)===String(id));if(!t)return;
+ if(t.done&&!checked){showToast('إنجاز هذه المهمة محفوظ؛ لن تُخصم نقاطها.');render();return}
+ if(checked&&!t.done){let earned=pointsFor(t);t.done=true;t.completedAt=new Date().toISOString();t.pointsAwarded=earned;d.points=(Number(d.points)||0)+earned;d.doneTotal=(Number(d.doneTotal)||0)+1;d.logs[today()]=(d.logs[today()]||0)+1;save();render();showToast('أحسنتِ! حصلتِ على '+earned+' نقاط');}
+}
+function removeTask(id){let d=data(),t=d.tasks.find(x=>String(x.id)===String(id));if(!t)return;if(t.done)return alert('هذه المهمة مكتملة ونقاطها محفوظة؛ لا يمكن حذفها من السجل.');if(!confirm('حذف هذه المهمة؟'))return;d.tasks=d.tasks.filter(x=>String(x.id)!==String(id));save();render()}
+function setScheduleView(v){view=v;renderSchedule()}
+function ensureDailyInstances(){
+ let d=data();d.dailyTasks=d.dailyTasks||[];let key=today();
+ d.dailyTasks.filter(x=>x.active!==false).forEach(t=>{
+   if(!d.tasks.some(x=>x.dailySource===t.id&&x.date===key)){
+     d.tasks.push({id:Date.now()+Math.floor(Math.random()*100000),title:t.title,cat:t.cat,time:t.time||'',date:key,diff:t.diff||'1',done:false,penalty:false,dailySource:t.id});
+   }
+ });
+}
+function renderDailyTaskList(){
+ let list=data().dailyTasks||[];
+ $('dailyTaskList').innerHTML=list.length?list.map(t=>`<div class="task"><span>${esc(t.title)}</span><button class="btn ghost" onclick="removeDailyTask('${t.id}')">إزالة</button></div>`).join(''):'<p class="muted">لم تضيفي مهام يومية متكررة بعد.</p>';
+}
+function addDailyTask(){
+ let title=$('dailyTaskName').value.trim();if(!title){alert('اكتبي اسم المهمة اليومية.');return}
+ let d=data();d.dailyTasks=d.dailyTasks||[];let id='daily-'+Date.now();
+ d.dailyTasks.push({id:id,title:title,cat:'روتين يومي',time:'',diff:'1',active:true});
+ $('dailyTaskName').value='';ensureDailyInstances();save();render();showToast('أضيفت إلى مهامكِ اليومية ✓');
+}
+function removeDailyTask(id){
+ let d=data();d.dailyTasks=(d.dailyTasks||[]).filter(t=>t.id!==id);
+ d.tasks=d.tasks.filter(t=>t.dailySource!==id);save();render();
+}
+function saveBaseSchedule(){data().baseSchedule=$('baseSchedule').value.trim();save();showToast('تم حفظ جدولكِ الأساسي ✓')}
+function renderMyTasks(){
+ if(!user)return;
+ let d=data(),list=[...(d.tasks||[])],filter=$('myTaskFilter')?.value||'all',sort=$('myTaskSort')?.value||'date';
+ if(filter==='pending')list=list.filter(t=>!t.done);else if(filter==='done')list=list.filter(t=>t.done);
+ list.sort((a,b)=>sort==='new'?(Number(b.id)||0)-(Number(a.id)||0):(String(a.date||'').localeCompare(String(b.date||''))||String(a.time||'').localeCompare(String(b.time||''))));
+ $('myTaskList').innerHTML=list.length?list.map(t=>`<div class="task" style="align-items:flex-start"><div style="flex:1"><b>${esc(t.title)}</b><div class="muted" style="margin-top:5px">${esc(t.cat||'أخرى')} · ${esc(t.date||'بلا تاريخ')} ${esc(t.time||'')} · ${t.done?'أُنجزت':'غير مكتملة'}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span class="pill">${t.done?'+'+(t.pointsAwarded??pointsFor(t))+' نقطة محفوظة':'+'+pointsFor(t)+' نقطة'}</span>${t.done?'<span class="pill">✓ مكتملة</span>':`<button class="btn" onclick="taskToggle(${Number(t.id)},true)">تم إنهاء المهمة</button>`}</div></div>`).join(''):'<div class="empty">ماكو مهام بهذا التصنيف حالياً.</div>';
+}
+function renderSchedule(){
+ ensureDailyInstances();
+ let d=data(),weekEnd=new Date();weekEnd.setDate(weekEnd.getDate()+6);
+ let endKey=`${weekEnd.getFullYear()}-${String(weekEnd.getMonth()+1).padStart(2,'0')}-${String(weekEnd.getDate()).padStart(2,'0')}`;
+ let tasks=d.tasks.filter(t=>view==='day'?t.date===today():view==='week'?t.date>=today()&&t.date<=endKey:t.date.slice(0,7)===today().slice(0,7));
+ $('calendarLabel').textContent=view==='day'?'مهام اليوم':view==='week'?'مهام الأيام السبعة القادمة':'مهام هذا الشهر';
+ $('taskList').innerHTML=tasks.length?tasks.sort((a,b)=>(a.time||'').localeCompare(b.time||'')).map(t=>`<div class="task"><input type="checkbox" ${t.done?'checked':''} onchange="taskToggle(${t.id},this.checked)"><span><b>${esc(t.title)}</b><small class="muted"> · ${esc(t.cat)} · ${t.date} ${t.time||''}</small></span><span class="pill">${t.done?'مكتملة':`+${pointsFor(t)} نقطة`}</span><button class="btn ghost" onclick="removeTask(${t.id})">×</button></div>`).join(''):'<div class="empty">لا توجد مهام في هذه الفترة. أضيفي أول مهمة 🌸</div>';
+ renderDailyTaskList();
+}
+function esc(s){return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function addWater(){
+ let d=data(),w=d.water||{date:today(),count:0,goal:6};
+ if(w.date!==today())w={date:today(),count:0,goal:w.goal||6};
+ w.count++;d.water=w;
+ d.waterPoints=d.waterPoints||{date:today(),awarded:0};
+ if(d.waterPoints.date!==today())d.waterPoints={date:today(),awarded:0};
+ if(d.waterPoints.awarded<6){d.points+=1;d.waterPoints.awarded++;showToast('تم تسجيل كوب الماء + نقطة ⭐');}
+ else showToast('تم تسجيل كوب الماء 💧');
+ save();render();
+}
+function resetWater(){data().water={date:today(),count:0,goal:data().water.goal||6};save();render()}
+function saveWaterGoal(){let g=Math.max(1,Math.min(20,Number($('waterGoal').value)||6));data().water.goal=g;save();render()}
+function saveFood(){data().food={dislike:$('dislike').value,avoid:$('avoid').value,allergy:$('allergy').value,favorite:$('favoriteFood').value};save();alert('تم حفظ تفضيلات الطعام.')}
+function saveSleep(){data().sleep.bed=$('sleepTime').value;data().sleep.wake=$('wakeTime').value;save();alert('تم حفظ المواعيد.')}
+function logSleep(){let h=Number($('sleepHours').value);if(!h||h>24)return alert('أدخلي عدد ساعات صحيحاً.');data().sleep.history=data().sleep.history||[];data().sleep.history.push({date:today(),hours:h});save();render()}
+function saveWeight(){let w=Number($('weight').value);if(!w||w>500)return alert('أدخلي قياساً صحيحاً.');data().weights.push({date:today(),value:w});save();render();showToast('تم حفظ القياس ✓')}
+function saveHeight(){let h=Number($('height').value);if(!h||h<50||h>230)return alert('أدخلي الطول بالسنتيمتر بشكل صحيح.');data().height={date:today(),value:h};save();$('heightHistory').textContent='آخر تسجيل للطول: '+h+' سم';showToast('تم حفظ الطول ✓')}
+function saveProfile(){let p=data().profile;p.display=$('profileDisplay').value;p.age=$('age').value;p.school=$('school').value;p.hobbies=$('hobbies').value;p.freeTime=$('freeTime').value;p.routine=$('routine').value;p.avatar=$('profileAvatar').value;save();render();alert('تم حفظ ملفكِ.')}
+function saveFaith(){data().faithGoal=$('faithGoal').value;save();alert('تم حفظ الهدف.')}
+function saveReminder(){data().waterReminder=$('waterReminder').value;save();alert('تم حفظ إعداد التذكير.')}
+async function enableNotifications(){if(!('Notification'in window))return alert('المتصفح لا يدعم إشعارات الويب.');let p=await Notification.requestPermission();$('notifyStatus').textContent=p==='granted'?'تم السماح بالإشعارات. تذكري أن التنبيهات الدورية قد تحتاج بقاء التطبيق مفتوحاً.':'لم يتم منح إذن الإشعارات.'}
+function prayerToggle(k,v){data().prayers[k]=v;save()}
+function render(){
+ if(!user)return;let d=data(),p=d.profile,avatar=p.avatar||'🌸';$('headAvatar').textContent=avatar;$('homeAvatar').textContent=avatar;$('hello').textContent='أهلاً '+(p.display||user)+'!';$('todayText').textContent=new Date().toLocaleDateString('ar-IQ',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+ let tasks=d.tasks.filter(t=>t.date===today()),done=tasks.filter(t=>t.done).length,rate=tasks.length?Math.round(done/tasks.length*100):0;
+ $('points').textContent=d.points;$('level').textContent='المستوى '+(1+Math.floor(d.points/100));$('doneCount').textContent=done+'/'+tasks.length;$('badges').textContent=Math.floor(d.doneTotal/5);$('rate').textContent=rate+'%';
+ $('homeTasks').innerHTML=tasks.length?tasks.slice(0,6).map(t=>`<div class="task"><input type="checkbox" ${t.done?'checked':''} onchange="taskToggle(${t.id},this.checked)"><span>${esc(t.title)}</span><span class="pill">${t.time||'اليوم'}</span></div>`).join(''):'<div class="empty">ما عندج مهام اليوم. أضيفيها من الجدول.</div>';
+ $('waterText').textContent=(d.water.date===today()?d.water.count:0)+' / '+(d.water.goal||6)+' أكواب';$('waterBar').style.width=Math.min(100,((d.water.date===today()?d.water.count:0)/(d.water.goal||6))*100)+'%';
+ $('assistantText').textContent=tasks.length?`أنجزتِ ${done} من ${tasks.length} مهام اليوم. ${rate>=70?'تقدم جميل، استمري بهدوء!':'اختاري مهمة صغيرة وابدئي بها، ويمكنكِ تعديل جدولكِ.'}`:'أضيفي مهامكِ اليومية وسأحسب نقاط إنجازكِ. لا بأس بتعديل الجدول عندما تتغير ظروفكِ.';
+ if(!$('taskDate').value)$('taskDate').value=today();$('baseSchedule').value=d.baseSchedule||'';$('height').value=d.height?.value||'';$('heightHistory').textContent=d.height?.value?'آخر تسجيل للطول: '+d.height.value+' سم':'لا يوجد طول مسجل';ensureDailyInstances();renderSchedule();$('dislike').value=d.food.dislike||'';$('avoid').value=d.food.avoid||'';$('allergy').value=d.food.allergy||'';$('favoriteFood').value=d.food.favorite||'';$('waterGoal').value=d.water.goal||6;$('sleepTime').value=d.sleep.bed||'';$('wakeTime').value=d.sleep.wake||'';$('sleepSummary').textContent=d.sleep.history?.length?'آخر تسجيل: '+d.sleep.history[d.sleep.history.length-1].hours+' ساعة':'لم تسجلي ساعات النوم بعد';$('weightHistory').textContent=d.weights.length?'آخر تسجيل: '+d.weights[d.weights.length-1].value+' كغم — '+d.weights[d.weights.length-1].date:'لا توجد قياسات مسجلة';
+ $('profileDisplay').value=p.display||'';$('age').value=p.age||'';$('school').value=p.school||'';$('hobbies').value=p.hobbies||'';$('freeTime').value=p.freeTime||'';$('routine').value=p.routine||'';$('profileAvatar').value=avatar;$('usernameLabel').textContent=user;$('faithGoal').value=d.faithGoal||'';$('waterReminder').value=d.waterReminder||'0';
+ $('prayers').innerHTML=['الفجر','الظهر','العصر','المغرب','العشاء'].map(x=>`<div class="task"><input type="checkbox" ${d.prayers[x]?'checked':''} onchange="prayerToggle('${x}',this.checked)"><span>صلاة ${x}</span><span class="muted">تسجيل شخصي</span></div>`).join('');
+ $('exerciseChoices').innerHTML=['مشي خفيف','تمدد ومرونة','رقص وحركة ممتعة','تمارين توازن','راحة واستشفاء'].map(x=>`<button class="chip" onclick="quickExercise('${x}')">${x}</button>`).join('');
+ $('careItems').innerHTML=['العناية بالبشرة','العناية بالشعر','تنظيف الأسنان','النظافة الشخصية'].map(x=>`<div class="task"><span>${x}</span><button class="btn light" onclick="addPreset('العناية','${x}')">أضيفي للجدول</button></div>`).join('');
+ $('achievementList').innerHTML=`<div class="chip">🌱 البداية: ${d.doneTotal>=1?'مكتسبة':'تُفتح بعد أول مهمة'}</div><div class="chip">⭐ خمس خطوات: ${d.doneTotal>=5?'مكتسبة':'تُفتح بعد 5 مهام'}</div><div class="chip">🌷 عشرون خطوة: ${d.doneTotal>=20?'مكتسبة':'تُفتح بعد 20 مهمة'}</div><p class="muted">عدد المهام المكتملة: ${d.doneTotal}</p>`;
+ $('store').innerHTML=[['🌸','افتار الزهرة',20],['🦋','افتار الفراشة',20],['💜','ثيم لافندر',50],['🌙','ثيم ليلي بنفسجي',70],['✨','خلفية النجوم',35]].map((x,i)=>`<div class="task"><span>${x[0]} ${x[1]}</span><span class="pill">${x[2]} نقطة</span><button class="btn light" onclick="buy(${i},${x[2]},'${x[0]}')">${d.owned.includes(i)?'مملوك':'فتح'}</button></div>`).join('');
+ $('totalDone').textContent=d.doneTotal;$('reportPoints').textContent=d.points;$('shopPoints').textContent=d.points;
+ renderMyTasks();
+ $('weeklyBars').innerHTML=Array.from({length:7},(_,i)=>{let date=new Date(Date.now()-(6-i)*864e5).toISOString().slice(0,10),n=d.logs[date]||0;return `<div style="display:flex;align-items:center;gap:8px;margin:8px 0"><span class="small" style="width:86px">${date.slice(5)}</span><div class="progress" style="flex:1"><span style="width:${Math.min(100,n*15)}%"></span></div><span class="small">${n}</span></div>`}).join('');
+}
+function quickExercise(x){data().tasks.push({id:Date.now(),title:x,cat:'رياضة',date:today(),diff:'1',done:false,penalty:false});save();render()}
+function buy(i,cost,emoji){let d=data();if(d.owned.includes(i))return alert('هذا العنصر مملوك بالفعل.');if(d.points<cost)return alert('نقاطكِ لا تكفي بعد.');d.points-=cost;d.owned.push(i);save();render();alert('تم فتح العنصر!');}
+
+const tourSteps=[
+{icon:'✿',title:'أهلاً بكِ في REINA',text:'هنا تبدأ رحلتكِ لتنظيم يومكِ. سنشرح لكِ أهم الأماكن، ويمكنكِ تخطي الجولة أو إكمالها.'},
+{icon:'⌂',title:'الرئيسية',text:'هنا تشاهدين نقاطكِ ومستواكِ ومهام اليوم ونسبة الإنجاز وملخص الماء.'},
+{icon:'▦',title:'الجدول',text:'اكتبي اسم المهمة، اختاري القسم والوقت والتاريخ، ثم اضغطي إضافة للجدول. ستظهر رسالة تأكيد وتنتقلين إلى قائمة المهام.'},
+{icon:'✓',title:'إكمال المهمة',text:'عندما تنتهين من المهمة، ضعي علامة في المربع بجانبها. ستضاف نقاطها تلقائياً ويظهر إشعار بعدد النقاط.'},
+{icon:'♡',title:'الصحة والدين',text:'سجلي عاداتكِ ومتابعتكِ الصحية والدينية من الأقسام المخصصة. المتابعة اختيارية وتناسب ظروفكِ.'},
+{icon:'🏆',title:'إنجازاتي والمتجر',text:'تابعي إنجازاتكِ وتقاريركِ، واستخدمي نقاطكِ لفتح العناصر المتاحة في المتجر.'},
+{icon:'♙',title:'حسابي والمساعدة',text:'عدّلي معلوماتكِ وإعدادات التذكير. اضغطي علامة ؟ داخل الأقسام لعرض شرح سريع.'}
+];
+let tourIndex=0;
+function showToast(message){let el=$('toast');el.textContent=message;el.classList.remove('hidden');clearTimeout(window._toastTimer);window._toastTimer=setTimeout(()=>el.classList.add('hidden'),3000)}
+function startTour(){tourIndex=0;renderTour();$('tour').classList.remove('hidden')}
+function renderTour(){let s=tourSteps[tourIndex];$('tourIcon').textContent=s.icon;$('tourTitle').textContent=s.title;$('tourText').textContent=s.text;$('tourDots').innerHTML=tourSteps.map((_,i)=>`<span class="${i===tourIndex?'on':''}"></span>`).join('');$('tourNext').textContent=tourIndex===tourSteps.length-1?'تم':'التالي'}
+function nextTour(){if(tourIndex<tourSteps.length-1){tourIndex++;renderTour()}else finishTour()}
+function finishTour(){data().tourDone=true;save();$('tour').classList.add('hidden');showToast('اكتملت جولة التعريف. أهلاً بكِ في REINA 💜')}
+function showHelp(section){let messages={
+schedule:'لإضافة مهمة: اكتبي اسمها، اختاري القسم والوقت والتاريخ والأهمية، ثم اضغطي إضافة للجدول. لإكمالها ضعي علامة في المربع بجانبها لتحصلي على نقاطها.',
+health:'من هذا القسم أضيفي نشاطاً، واحفظي تفضيلات الطعام والحساسية، وحددي هدف الماء ومواعيد النوم. سجلات الوزن اختيارية ولا تمنح أو تخصم نقاطاً.',
+religion:'ضعي علامة بجانب الصلاة لتسجيلها لنفسكِ، ويمكنكِ إضافة الورد والأذكار والسنن إلى جدولكِ. المتابعة خاصة بكِ.',
+achievements:'هنا تجدين شاراتكِ ومستواكِ وتقاريركِ. المتجر يسمح بفتح عناصر باستخدام النقاط المتوفرة.',
+profile:'عدّلي بياناتكِ وافتاركِ من هنا. يمكنكِ طلب إذن إشعارات المتصفح، لكن عملها بالخلفية يعتمد على الجهاز والمتصفح.'
+};alert(messages[section]||'استخدمي الشريط السفلي للتنقل بين أقسام REINA.')}
+
+window.addEventListener('load',()=>{let n=localStorage.getItem(SESSION);if(n&&users()[n])enter(n);});
+</script>
+</body></html>
